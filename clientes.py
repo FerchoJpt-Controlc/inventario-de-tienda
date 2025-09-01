@@ -11,7 +11,7 @@ class Cliente:
 
 class GestorClientes:
     def __init__(self):
-        self.archivo = GestorArchivos("data/CLIENTES.txt")
+        self.archivo = GestorArchivos("CLIENTES.txt")
         self.clientes: dict[str, Cliente] = {}
         self.cargar_clientes()
 
@@ -51,15 +51,16 @@ class GestorClientes:
                         self.mostrar_clientes()
                     case "2":
                         try:
-                            ID = input("ID: ").strip()
+                            ID = input("NIT: ").strip()
                             Nombre = input("Nombre: ").strip()
                             Direccion = input("Dirección: ").strip()
                             Telefono = input("Teléfono: ").strip()
+                            Correo = input("Correo: ").strip()
 
                             if not ID or not Nombre:
-                                raise ValueError("ID y Nombre son obligatorios")
+                                raise ValueError("NIT y Nombre son obligatorios")
 
-                            self.agregar_cliente(Cliente(ID, Nombre, Direccion, Telefono))
+                            self.agregar_cliente(Cliente(ID, Nombre, Direccion, Telefono, Correo))
                             print("Cliente agregado correctamente.")
                         except Exception as e:
                             print(f"Error al agregar cliente: {e}")
