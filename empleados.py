@@ -39,3 +39,44 @@ class GestorEmpleados:
             print(f"{e.IDEmpleado} | {e.Nombre} | {e.Puesto} ")
 
 
+
+    def menu(self):
+        while True:
+            print("\n--- GESTIÓN DE EMPLEADOS ---")
+            print("1. Ver empleados")
+            print("2. Agregar empleado")
+            print("0. Volver")
+
+            try:
+                opcion = input("Seleccione: ").strip()
+
+                match opcion:
+                    case "1":
+                        self.mostrar_empleados()
+                    case "2":
+                        try:
+                            ID = input("ID: ").strip()
+                            Nombre = input("Nombre: ").strip()
+                            Direccion = input("Direccion: ").strip()
+                            Telefono = input("Telefono: ").strip()
+                            Correo = input("Correo: ").strip()
+                            Puesto = input("Puesto: ").strip()
+
+
+                            if not ID or not Nombre:
+                                raise ValueError("ID y Nombre son obligatorios")
+
+                            self.agregar_empleado(Empleado(ID, Nombre, Direccion, Telefono, Correo, Puesto))
+                            print("Empleado agregado correctamente.")
+                        except Exception as e:
+                            print(f"Error al agregar empleado: {e}")
+                    case "0":
+                        print("Volviendo al menú principal...")
+                        break
+                    case _:
+                        print("Opción inválida")
+            except Exception as e:
+                print(f"Ocurrió un error: {e}")
+
+
+
