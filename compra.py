@@ -1,5 +1,5 @@
 from GuardarDatosEnArchivos import GestorArchivos
-
+"""
 #compra
 class Compra:
     def __init__(self, IDCompra, IDProveedor, IDEmpleado, Fecha, Total):
@@ -69,7 +69,65 @@ class GestorDetalleCompras:
         print("\n--- DETALLES DE COMPRAS ---")
         for d in self.detalles.values():
             print(f"Compra: {d.IDCompra} | Prod: {d.IDProducto} | Cant: {d.Cantidad} | Subtotal: Q{d.Subtotal}")
+"""
+from GuardarDatosEnArchivos import GestorArchivos
+
+class Compra:
+    def __init__(self, IDCompra, IDProveedor, IDEmpleado, Fecha, Total):
+        self.IDCompra = IDCompra
+        self.IDProveedor = IDProveedor
+        self.IDEmpleado = IDEmpleado
+        self.Fecha = Fecha
+        self.Total = float(Total)
+
+
+class GestorCompras:
+    def __init__(self):
+        self.archivo = GestorArchivos("COMPRAS.txt")
+        self.compras: dict[str, Compra] = {}
+        self.cargar_compras()
+
+    def cargar_compras(self):
+        lineas = self.archivo.cargar()
+        for linea in lineas:
+            IDCompra, IDProveedor, IDEmpleado, Fecha, Total = linea.strip().split(",")
+            self.compras[IDCompra] = Compra(IDCompra, IDProveedor, IDEmpleado, Fecha, Total)
+
+    def guardar_compras(self):
+        datos = []
+        for c in self.compras.values():
+            datos.append(f"{c.IDCompra},{c.IDProveedor},{c.IDEmpleado},{c.Fecha},{c.Total}")
+        self.archivo.guardar(datos)
+
+    def agregar_compra(self, compra: Compra):
+        self.compras[compra.IDCompra] = compra
+        self.guardar_compras()
+
+    def mostrar_compras(self):
+        print("\n--- LISTA DE COMPRAS ---")
+        for c in self.compras.values():
+            print(f"{c.IDCompra} | Prov: {c.IDProveedor} | Emp: {c.IDEmpleado} | {c.Fecha} | Total: Q{c.Total}")
 
 
 
+    def menu(self):
+        while True:
+            print("\n--- GESTIÓN DE COMPRAS ---")
+            print("1. Ver compras")
+            print("2. Agregar compra")
+            print("0. Volver")
+            opcion = input("Seleccione: ")
 
+            if opcion == "1":
+                self.mostrar_compras()
+            elif opcion == "2":
+                ID = input("ID: ")
+                Prov = input("ID Proveedor: ")
+                Emp = input("ID Empleado: ")
+                Fecha = input("Fecha(dd/mm/yyyy): ")
+                Total = float(input("Total: "))
+                self.agregar_compra(Compra(ID, Prov, Emp, Fecha, Total))
+            elif opcion == "0":
+                break
+            else:
+                print("Opción inválida")
