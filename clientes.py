@@ -35,3 +35,39 @@ class GestorClientes:
         print("\n--- LISTA DE CLIENTES ---")
         for c in self.clientes.values():
             print(f"{c.IDCliente} | {c.Nombre} | {c.Direccion} | {c.Telefono} | {c.Correo}")
+
+    def menu(self):
+        while True:
+            print("\n--- GESTIÓN DE CLIENTES ---")
+            print("1. Ver clientes")
+            print("2. Agregar cliente")
+            print("0. Volver")
+
+            try:
+                opcion = input("Seleccione: ").strip()
+
+                match opcion:
+                    case "1":
+                        self.mostrar_clientes()
+                    case "2":
+                        try:
+                            ID = input("ID: ").strip()
+                            Nombre = input("Nombre: ").strip()
+                            Direccion = input("Dirección: ").strip()
+                            Telefono = input("Teléfono: ").strip()
+
+                            if not ID or not Nombre:
+                                raise ValueError("ID y Nombre son obligatorios")
+
+                            self.agregar_cliente(Cliente(ID, Nombre, Direccion, Telefono))
+                            print("Cliente agregado correctamente.")
+                        except Exception as e:
+                            print(f"Error al agregar cliente: {e}")
+                    case "0":
+                        print("Volviendo al menú principal...")
+                        break
+                    case _:
+                        print("Opción inválida")
+            except Exception as e:
+                print(f"Ocurrió un error: {e}")
+
