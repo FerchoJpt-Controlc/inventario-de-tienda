@@ -39,4 +39,3 @@ class GestorEmpleados:
             print(f"{e.IDEmpleado} | {e.Nombre} | {e.Puesto} ")
 
 
-    #chinge su madre progra,a ijielagranputa ya me quierondar de nabja de la put
