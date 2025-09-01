@@ -34,3 +34,41 @@ class GestorProveedores:
         print("\n--- LISTA DE PROVEEDORES ---")
         for p in self.proveedores.values():
             print(f"{p.IDProveedor} | {p.Nombre} | {p.Telefono} | {p.Correo}")
+
+
+
+    def menu(self):
+        while True:
+            print("\n--- GESTION DE PROVEEDORES ---")
+            print("1. Ver proveedores")
+            print("2. Agregar proveedor")
+            print("0. Volver")
+
+            try:
+                opcion = input("Seleccione: ").strip()
+
+                match opcion:
+                    case "1":
+                        self.mostrar_proveedores()
+                    case "2":
+                        try:
+                            ID = input("NIT del proveedor: ").strip()
+                            Nombre = input("Nombre del proveedor: ").strip()
+                            Telefono = input("Teléfono: ").strip()
+                            Correo = input("Correo: ").strip()
+
+                            if not ID or not Nombre:
+                                raise ValueError("ID y Nombre son obligatorios")
+
+                            self.agregar_proveedor(Proveedor(ID, Nombre, Telefono, Correo))
+                            print("Proveedor agregado correctamente.")
+                        except Exception as e:
+                            print(f"Error al agregar proveedor: {e}")
+                    case "0":
+                        print("Volviendo al menu principal...")
+                        break
+                    case _:
+                        print("Opcion invalida")
+            except Exception as e:
+                print(f"Ocurrio un error: {e}")
+
