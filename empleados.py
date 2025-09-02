@@ -10,7 +10,6 @@ class Empleado:
         self.Puesto = Puesto
 
 
-
 class GestorEmpleados:
     def __init__(self):
         self.archivo = GestorArchivos("EMPLEADOS.txt")
@@ -20,13 +19,21 @@ class GestorEmpleados:
     def cargar_empleados(self):
         lineas = self.archivo.cargar()
         for linea in lineas:
-            IDEmpleado, Nombre, Direccion, Telefono, Correo, Puesto = linea.strip().split(",")
-            self.empleados[IDEmpleado] = Empleado(IDEmpleado, Nombre, Direccion, Telefono, Correo, Puesto)
+            datos = linea.strip().split(",")
+            if len(datos) == 6:  # aseguramos que tenga todos los campos
+                IDEmpleado, Nombre, Direccion, Telefono, Correo, Puesto = datos
+                self.empleados[IDEmpleado] = Empleado(
+                    IDEmpleado, Nombre, Direccion, Telefono, Correo, Puesto
+                )
+            else:
+                print(f"⚠ Línea inválida en EMPLEADOS.txt: {linea}")
 
     def guardar_empleados(self):
         datos = []
         for e in self.empleados.values():
-            datos.append(f"{e.IDEmpleado},{e.Nombre},{e.Direccion},{e.Telefono},{e.Correo},{e.Puesto}")
+            datos.append(
+                f"{e.IDEmpleado},{e.Nombre},{e.Direccion},{e.Telefono},{e.Correo},{e.Puesto}"
+            )
         self.archivo.guardar(datos)
 
     def agregar_empleado(self, empleado: Empleado):
@@ -36,9 +43,9 @@ class GestorEmpleados:
     def mostrar_empleados(self):
         print("\n--- LISTA DE EMPLEADOS ---")
         for e in self.empleados.values():
-            print(f"{e.IDEmpleado} | {e.Nombre} | {e.Puesto} ")
-
-
+            print(
+                f"{e.IDEmpleado} | {e.Nombre} | {e.Direccion} | {e.Telefono} | {e.Correo} | {e.Puesto}"
+            )
 
     def menu(self):
         while True:
@@ -62,11 +69,12 @@ class GestorEmpleados:
                             Correo = input("Correo: ").strip()
                             Puesto = input("Puesto: ").strip()
 
-
                             if not ID or not Nombre:
                                 raise ValueError("ID y Nombre son obligatorios")
 
-                            self.agregar_empleado(Empleado(ID, Nombre, Direccion, Telefono, Correo, Puesto))
+                            self.agregar_empleado(
+                                Empleado(ID, Nombre, Direccion, Telefono, Correo, Puesto)
+                            )
                             print("Empleado agregado correctamente.")
                         except Exception as e:
                             print(f"Error al agregar empleado: {e}")
@@ -77,6 +85,7 @@ class GestorEmpleados:
                         print("Opción inválida")
             except Exception as e:
                 print(f"Ocurrió un error: {e}")
+
 
 
 

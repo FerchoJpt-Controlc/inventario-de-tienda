@@ -11,7 +11,7 @@ class Venta:
 
 class GestorVentas:
     def __init__(self):
-        self.archivo = GestorArchivos("data/VENTAS.txt")
+        self.archivo = GestorArchivos("VENTAS.txt")
         self.ventas: dict[str, Venta] = {}
         self.cargar_ventas()
 

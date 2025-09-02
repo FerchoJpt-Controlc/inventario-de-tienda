@@ -23,6 +23,7 @@ class GestorProductos:
     def __init__(self):
         self.archivo = GestorArchivos("PRODUCTOS.txt")
         self.productos: dict[str, Producto] = {}
+
         self.cargar_productos()
 
     def cargar_productos(self):
@@ -37,9 +38,22 @@ class GestorProductos:
             datos.append(f"{producto.IDProducto},{producto.Nombre},{producto.Precio},{producto.Stock}")
         self.archivo.guardar(datos)
 
-    def agregar_producto(self, producto: Producto):
+    def agregar_producto(self, producto: Producto, IDEmpleado=None):
         self.productos[producto.IDProducto] = producto
         self.guardar_productos()
+
+        if producto.IDProducto in self.productos:
+            self.productos[producto.IDProducto].Stock += producto.Stock
+            print(f"Stock aumentado en {producto.Stock} unidades.")
+        else:
+            self.productos[producto.IDProducto] = producto
+            print(f"Producto {producto.Nombre} agregado al inventario.")
+
+        self.guardar_productos()
+
+        # Registrar en compras automáticamente
+        if self.gestor_compras:
+            self.gestor_compras.registrar_compra(producto, IDEmpleado)
 
     def mostrar_productos(self):
         print("\n--- LISTA DE PRODUCTOS ---")
